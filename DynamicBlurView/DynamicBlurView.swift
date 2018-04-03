@@ -13,9 +13,9 @@ open class DynamicBlurView: UIView {
         return BlurLayer.self
     }
 
-    private var staticImage: UIImage?
-    private var displayLink: CADisplayLink?
-    private var blurLayer: BlurLayer {
+    fileprivate var staticImage: UIImage?
+    fileprivate var displayLink: CADisplayLink?
+    fileprivate var blurLayer: BlurLayer {
         return layer as! BlurLayer
     }
     private let mainQueue = DispatchQueue.main
@@ -26,7 +26,7 @@ open class DynamicBlurView: UIView {
             return .global(priority: .high)
         }
     }()
-    private var renderingTarget: UIView? {
+    fileprivate var renderingTarget: UIView? {
         if isDeepRendering {
             return window
         } else {
@@ -114,7 +114,7 @@ open class DynamicBlurView: UIView {
         }
     }
 
-    private func draw(_ image: UIImage, blurRadius radius: CGFloat, fixes isFixes: Bool, baseLayer: CALayer?) {
+    fileprivate func draw(_ image: UIImage, blurRadius radius: CGFloat, fixes isFixes: Bool, baseLayer: CALayer?) {
         async(on: globalQueue) { [weak self] in
             if let me = self, let blurredImage = image.blurred(radius: radius, iterations: me.iterations, ratio: me.blurRatio, blendColor: me.blendColor, blendMode: me.blendMode) {
                 me.sync(on: me.mainQueue) {
@@ -133,7 +133,7 @@ open class DynamicBlurView: UIView {
         }
     }
 
-    private func snapshotImage(for layer: CALayer, conversion: Bool) -> UIImage? {
+    fileprivate func snapshotImage(for layer: CALayer, conversion: Bool) -> UIImage? {
         let rect = blurLayerRect(to: layer, conversion: conversion)
         guard let context = CGContext.imageContext(with: quality, rect: rect, opaque: isOpaque) else {
             return nil
@@ -160,7 +160,7 @@ extension DynamicBlurView {
 }
 
 extension DynamicBlurView {
-    private func linkForDisplay() {
+    fileprivate func linkForDisplay() {
         displayLink?.invalidate()
         displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(DynamicBlurView.displayDidRefresh(_:)))
         displayLink?.add(to: .main, forMode: RunLoopMode(rawValue: trackingMode.description))
