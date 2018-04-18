@@ -6,12 +6,14 @@
 //  Copyright © 2017年 kyohei_ito. All rights reserved.
 //
 
-public enum TrackingMode: CustomStringConvertible {
+@objc public enum TrackingMode : Int, RawRepresentable {
     case tracking
     case common
     case none
-
-    public var description: String {
+    
+    public typealias RawValue = String
+    
+    public var rawValue: RawValue {
         switch self {
         case .tracking:
             return RunLoopMode.UITrackingRunLoopMode.rawValue
@@ -21,5 +23,15 @@ public enum TrackingMode: CustomStringConvertible {
             return ""
         }
     }
+    
+    public init?(rawValue: RawValue) {
+        switch rawValue {
+        case RunLoopMode.UITrackingRunLoopMode.rawValue:
+            self = .tracking
+        case RunLoopMode.commonModes.rawValue:
+            self = .common
+        default:
+            self = .none
+        }
+    }
 }
-

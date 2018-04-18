@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class DynamicBlurView: UIView {
+@objcMembers open class DynamicBlurView: UIView {
     open override class var layerClass : AnyClass {
         return BlurLayer.self
     }
@@ -52,7 +52,7 @@ open class DynamicBlurView: UIView {
     }
     /// Blend color.
     open var blendColor: UIColor?
-	/// Blend mode.
+    /// Blend mode.
     open var blendMode: CGBlendMode = .plusLighter
     /// Default is 3.
     open var iterations: Int = 3
@@ -163,7 +163,7 @@ extension DynamicBlurView {
     private func linkForDisplay() {
         displayLink?.invalidate()
         displayLink = UIScreen.main.displayLink(withTarget: self, selector: #selector(DynamicBlurView.displayDidRefresh(_:)))
-        displayLink?.add(to: .main, forMode: RunLoopMode(rawValue: trackingMode.description))
+        displayLink?.add(to: .main, forMode: RunLoopMode(rawValue: trackingMode.rawValue))
     }
 
     @objc private func displayDidRefresh(_ displayLink: CADisplayLink) {
